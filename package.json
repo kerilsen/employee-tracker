@@ -9,7 +9,7 @@
     "seed": "node ./db/seeds.sql"
   },
   "keywords": [],
-  "author": "",
+  "author": "Keri Sen",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
