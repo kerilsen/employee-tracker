@@ -14,20 +14,20 @@ title VARCHAR(30) NOT NULL,
 salary DECIMAL
 );
 
+CREATE TABLE departmentRoles (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    dept_id INT,
+    role_id INT,
+    FOREIGN KEY (dept_id) REFERENCES departments(id),
+    FOREIGN KEY (role_id) REFERENCES roles(id)
+);
+
 CREATE TABLE employees (
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 first_name VARCHAR(30) NOT NULL,
 last_name VARCHAR(30) NOT NULL,
-role_id INT,
-manager_id int not null references employees
--- FOREIGN KEY (role_id)
--- REFERENCES DepartmentRoles(id)
-);
-
-CREATE TABLE DepartmentRoles (
-    -- id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    DepartmentID INT,
-    RoleID INT,
-    FOREIGN KEY (DepartmentID) REFERENCES departments(id),
-    FOREIGN KEY (RoleID) REFERENCES roles(id)
+deptrole_id INT,
+manager_id int not null references employees,
+FOREIGN KEY (deptrole_id)
+REFERENCES departmentRoles(id)
 );
