@@ -22,6 +22,8 @@ CREATE TABLE departmentRoles (
     FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
+CREATE UNIQUE INDEX ix_uq ON departmentRoles (dept_id, role_id);
+
 CREATE TABLE employees (
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 first_name VARCHAR(30) NOT NULL,

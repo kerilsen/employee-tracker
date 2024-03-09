@@ -84,4 +84,4 @@ async function main() {
         console.log('NOT to update', getOrder.orders)
     }
 }
-main()
+main();
