@@ -1,10 +1,10 @@
 {
   "name": "employee-tracker",
   "version": "1.0.0",
-  "description": "A command-line application that manages a fictional company's employee database, using Node.js, Inquirer, and MySQL.",
+  "description": "A command-line application that manages a fictional company's employee database using Node.js, Inquirer and MySQL.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node ./assets/ui.js",
     "watch": "nodemon server.js",
     "seed": "node ./db/seeds.sql"
   },
@@ -12,7 +12,6 @@
   "author": "Keri Sen",
   "license": "MIT",
   "dependencies": {
-    "chalk": "^5.3.0",
     "dotenv": "^16.4.5",
     "inquirer": "^8.2.4",
     "mysql2": "^3.9.1"
