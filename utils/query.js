@@ -102,8 +102,6 @@ const utilizedDeptBudget = () => {
 // UPDATE
 // 13. Update employee record
 const updateEmployee = () => {
-    // search function?? what if you only want to update one field? still cycle through all of the options? or send a list of items to change
-    // then use the result to construct the query
     return `UPDATE employees SET first_name = ?, last_name = ?, deptRole_id = ?, manager_id = ? WHERE id = ?`;
 }
 
