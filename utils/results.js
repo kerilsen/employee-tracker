@@ -14,9 +14,11 @@ const addEmployee = async (data) => {
         text: `INSERT INTO employees (first_name, last_name, deptrole_id, manager_id) VALUES (?, ?, ?, ?)`,
         values: [employee.first_name, employee.last_name, employee.deptrole_id, employee.manager_id]
     };
+    console.log('query is: ', query);
+    console.log(typeof query, typeof query.values[0], typeof query.values[1], typeof query.values[2], typeof query.values[3]);
 
     try {
-        await db.query(query);
+        await db.query(query.text, query.values);
         console.log(`${employee.first_name} ${employee.last_name} has been added successfully`);
     } catch (error) {
         console.error('Unable to add employee to database: ', error);

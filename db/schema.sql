@@ -29,7 +29,7 @@ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 first_name VARCHAR(30) NOT NULL,
 last_name VARCHAR(30) NOT NULL,
 deptrole_id INT,
-manager_id int not null references employees,
+manager_id INT REFERENCES employees,
 FOREIGN KEY (deptrole_id)
 REFERENCES departmentRoles(id)
 );
