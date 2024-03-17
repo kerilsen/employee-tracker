@@ -12,9 +12,9 @@ async function userInterface() {
         const choice = await getInput.menu;
         // These are the menu options that do not require any follow-up questions from the user
         // Just need to grab the results and send back
-        const noParams = [5, 7, 9, 10, 11];
+        const simpleQuery = [5, 7, 9, 10, 11];
         try {
-            if (noParams.includes(choice)) {
+            if (simpleQuery.includes(choice)) {
                 const query = grabQuery(choice);
                 const [rows] = await db.query(query);
                 console.table(rows);
@@ -24,6 +24,7 @@ async function userInterface() {
             await sendResults(choice, answers);
             }
             // loop back with a recursive function(when the user presses a key?) - need to add an exit
+            // while db.connect is on? else goodbye()
             userInterface();
 
         } catch (error) {
