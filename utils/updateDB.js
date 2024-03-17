@@ -2,31 +2,56 @@
 const db = require('../config/connection');
 
 const addEmployee = async (data) => {
-    console.log(`addEmployee name is ${data.first_name} ${data.last_name} and their role id is ${data.role} and their manager id is ${data.manager}`);
-    const employee = {
+   const employee = {
         "first_name": data.first_name,
         "last_name": data.last_name,
         "deptrole_id": data.role,
         "manager_id": data.manager
     };
-
     const query = {
         text: `INSERT INTO employees (first_name, last_name, deptrole_id, manager_id) VALUES (?, ?, ?, ?)`,
-        values: [employee.first_name, employee.last_name, employee.deptrole_id, employee.manager_id]
+        values: [employee.first_name, employee.last_name, employee.deptrole_id, employee.manager_id],
+        message: `${employee.first_name} ${employee.last_name} has been added successfully`
     };
-    console.log('query is: ', query);
-    console.log(typeof query, typeof query.values[0], typeof query.values[1], typeof query.values[2], typeof query.values[3]);
-
-    try {
-        await db.query(query.text, query.values);
-        console.log(`${employee.first_name} ${employee.last_name} has been added successfully`);
-    } catch (error) {
-        console.error('Unable to add employee to database: ', error);
-    }
+    return query;
 };
 
+const addRole = async (data) => {
+ 
+    const role = {
+         "title": data.title,
+         "salary": data.salary,
+         "dept_id": data.dept_id
+     };
+
+     // need to grab id
+     let query = [{
+         text: `INSERT INTO roles (title, salary) VALUES (?, ?)`,
+        
+         values: [data.title, data.salary, data.dept_id],
+         message: `${data.title} has been added successfully`
+     },
+    {
+        text: `SET @role_id = LAST_INSERT_ID();
+        INSERT INTO departmentRoles (?, @role_id)`,
+    }];
+     process(query)
+     
+     return query;
+ };
+
+ // Helper function to process MySQL parametized results
+ const process = async(object) => {
+    try {
+        await db.query(object.text, object.values);
+        console.log(object.message);
+    } catch (error) {
+        console.error('Unable to update database: ', error);
+    }
+ }
+
 // Switch statement to choose from all results
-const sendResults = (choice, data) => {
+const updateDB = async (choice, data) => {
     let result;
     switch (choice) {
         // CREATE 
@@ -69,7 +94,7 @@ const sendResults = (choice, data) => {
         case 16: result = deleteDept(data);
             break;
     }
-    return result;
+    return;
 }
 
-module.exports = sendResults;
+module.exports = updateDB;

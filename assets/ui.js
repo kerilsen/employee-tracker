@@ -3,7 +3,7 @@ const grabQuery = require('../utils/query');
 const db = require('../config/connection');
 const { grabPrompt } = require('../utils/prompts');
 const { mainMenu } = require('../assets/menu');
-const sendResults = require('../utils/results');
+const updateDB = require('../utils/updateDB');
 
 async function userInterface() {
     try {
@@ -21,7 +21,7 @@ async function userInterface() {
             } else {
             // send for nested inquirer prompts
             const answers = await grabPrompt(choice);
-            await sendResults(choice, answers);
+            await updateDB(choice, answers);
             }
             // loop back with a recursive function(when the user presses a key?) - need to add an exit
             // while db.connect is on? else goodbye()

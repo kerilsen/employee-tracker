@@ -17,7 +17,11 @@ const managers = () => {
     JOIN employees e2 ON e1.manager_id = e2.id;`
 }
 
-const getChoices = async (value) => {
+const departments = () => {
+    return `SELECT id AS ID, department_name AS name FROM departments;`
+}
+
+const grabData = async (value) => {
     let choice;
     switch (value) {
         case 'deptRoles': choice = deptRoles();
@@ -26,6 +30,8 @@ const getChoices = async (value) => {
             break;
         case 'lastNames': choice = lastNames();
             break;
+        case 'departments': choice = departments();
+            break;
 
     }
     const [rows] = await db.query(choice);
@@ -33,4 +39,4 @@ const getChoices = async (value) => {
     return choices;
 }
 
-module.exports = { getChoices, lastNames };
+module.exports = { grabData };
