@@ -1,4 +1,4 @@
-const { getChoices } = require('./data');
+const { grabData } = require('./data');
 const inquirer = require('inquirer');
 
 const addEmployee = async () => {
@@ -17,13 +17,35 @@ const addEmployee = async () => {
             type: 'list',
             name: 'role',
             message: `What is the employee's role?`,
-            choices: await getChoices('deptRoles')
+            choices: await grabData('deptRoles')
         },
         {
             type: 'list',
             name: 'manager',
             message: `Who is the employee's manager?`,
-            choices: await getChoices('managers')
+            choices: await grabData('managers')
+        }
+    ]);
+    return value;
+}
+
+const addRole = async () => {
+    const value = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'title',
+            message: 'What is the new job title for the role you wish to add?'
+        },
+        {
+            type: 'number',
+            name: 'salary',
+            message: 'What is the salary for the new role?'
+        },
+        {
+            type: 'list',
+            name: 'department',
+            message: 'What department will this role be in?',
+            choices: await grabData('departments')
         }
     ]);
     return value;
