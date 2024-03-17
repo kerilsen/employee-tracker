@@ -1,15 +1,12 @@
 const inquirer = require('inquirer');
-const grabQuery = require('../lib/query');
+const grabQuery = require('../utils/query');
 const db = require('../config/connection');
-const { grabPrompt } = require('../lib/prompts');
+const { grabPrompt } = require('../utils/prompts');
 const { mainMenu } = require('../assets/menu');
-const sendResults = require('../lib/results');
+const sendResults = require('../utils/results');
 
 async function userInterface() {
     try {
-        // connect to database
-        // const db = await dbPromise();
-        // send main menu options to user
         const getInput = await inquirer.prompt(mainMenu);
         // grab menu choice as a number
         const choice = await getInput.menu;
