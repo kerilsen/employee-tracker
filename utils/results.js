@@ -1,223 +1,73 @@
-const { getChoices } = require('./data');
-const inquirer = require('inquirer');
-const inquirerPrompt = require('inquirer-autocomplete-prompt');
-inquirer.registerPrompt('autocomplete', inquirerPrompt);
 
-let value = {};
+const db = require('../config/connection');
 
 const addEmployee = async (data) => {
+    console.log(`addEmployee name is ${data.first_name} ${data.last_name} and their role id is ${data.role} and their manager id is ${data.manager}`);
     const employee = {
         "first_name": data.first_name,
         "last_name": data.last_name,
-        "deptrole_id":,
-        "manager_id":
+        "deptrole_id": data.role,
+        "manager_id": data.manager
+    };
+
+    const query = {
+        text: `INSERT INTO employees (first_name, last_name, deptrole_id, manager_id) VALUES (?, ?, ?, ?)`,
+        values: [employee.first_name, employee.last_name, employee.deptrole_id, employee.manager_id]
+    };
+
+    try {
+        await db.query(query);
+        console.log(`${employee.first_name} ${employee.last_name} has been added successfully`);
+    } catch (error) {
+        console.error('Unable to add employee to database: ', error);
     }
-    return results;
-}
-
-const addRole = async () => {
-    value = await inquirer.prompt(
-        {
-            type: 'input',
-            name: 'role',
-            message: 'What role would you like to add?'
-        },
-        {
-            type: 'list',
-            name: 'department',
-            message: 'What department will this role be in?',
-            choices: getChoices(10)
-        }
-    )
-    return value;
-}
-
-const addDept = async () => {
-    let departments = getChoices(10);
-    value = await inquirer.prompt(
-        {
-            type: 'input',
-            name: 'department',
-            message: 'What department would you like to add?'
-        }
-    )
-    if (departments.includes(value.trim())) {
-        console.log('This department already exists');
-        return;
-    } else return value.trim();
-}
-
-const addDeptRole = async () => {
-    value = await inquirer.prompt(
-        {
-            type: 'list',
-            name: 'department',
-            message: 'Which department do you want to add the role to?',
-            choices: getChoices(10)
-        },
-        {
-            type: 'list',
-            name: 'role',
-            message: 'What role would you like to add?',
-            choices: getChoices(9)
-        }
-    )
-    return value;
-}
-
-const viewDeptEmployees = async () => {
-    value = await inquirer.prompt(
-        {
-            type: 'list',
-            name: 'department',
-            message: 'Employee list from which department?',
-            choices: getChoices(10)
-        }
-    )
-    return value;
 };
 
-const viewTeam = async () => {
-    value = await inquirer.prompt(
-        {
-            type: 'list',
-            name: 'managers',
-            message: 'Employee list for which manager?',
-            choices: getChoices(7)
-        }
-    )
-}
-const validateEmployeeID = (input) => {
-    const number = input;
-    if (number < 1 || number > 100) {
-        return 'Employee ID must be between 1 and 100.';
-    }
-    return true;
-};
-
-const updateEmployee = async () => {
-    value = await inquirer.prompt(
-        {
-            type: 'number',
-            name: 'employee_id',
-            message: 'Enter the id number of the employee you would like to update (between 1-100)',
-            validate: validateEmployeeID
-        },
-        {
-            type: 'list',
-            name: 'deptRole',
-            message: 'What department and role would you like to update for the employee?',
-            choices: getChoices(11)
-        }
-    )
-    return value;
-}
-
-const updateManager = async () => {
-    value = await inquirer.prompt(
-        {
-            type: 'number',
-            name: 'employee_id',
-            message: 'Enter the id number of the employee you would like to update (between 1-100)',
-            validate: validateEmployeeID
-        },
-        {
-            type: 'list',
-            name: 'manager',
-            message: 'What manager would you like to choose for the employee?',
-            choices: getChoices(7)
-        }
-    )
-    return value;
-}
-
-const deleteEmployee = async () => {
-    value = await inquirer.prompt(
-        {
-            type: 'number',
-            name: 'employee',
-            message: 'Please enter the ID number for the employee record you would like to delete',
-            validate: validateEmployeeID,
-        },
-        {
-            type: 'confirm',
-            name: 'deleteYes',
-            message: 'Are you sure you want to delete this employee?'
-        }
-    )
-}
-
-const deleteRole = async () => {
-    value = await inquirer.prompt(
-        {
-            type: 'list',
-            name: 'roles',
-            message: 'Which role would you like to delete?',
-            choices: getChoices(9)
-        },
-        {
-            type: 'confirm',
-            name: 'deleteYes',
-            message: 'Are you sure you want to delete this role?'
-        }
-    )
-}
-
-const deleteDept = async () => {
-    value = await inquirer.prompt(
-        {
-            type: 'list',
-            name: 'department',
-            message: 'Which department would you like to delete?',
-            choices: getChoices(10),
-        },
-        {
-            type: 'confirm',
-            name: 'deleteYes',
-            message: 'Are you sure you want to delete this department?'
-        }
-    )
-}
-
-// Switch statement to send back results for queries with input 
-const sendResults = (data, choice) => {
-    let results;
+// Switch statement to choose from all results
+const sendResults = (choice, data) => {
+    let result;
     switch (choice) {
         // CREATE 
-        case 1: results = addEmployee(data);
+        case 1: result = addEmployee(data);
             break;
-        case 2: results = addRole(data);
+        case 2: result = addRole(data);
             break;
-        case 3: results = addDept(data);
+        case 3: result = addDept(data);
             break;
-        case 4: results = addDeptRole(data);
+        case 4: result = addDeptRole(data);
             break;
 
         // READ
-        case 6: results = viewDeptEmployees(data);
+        case 5: result = viewEmployees(data);
             break;
-        case 8: results = viewTeam(data);
+        case 6: result = viewDeptEmployees(data);
             break;
-        case 11: results = getDeptRoles(data);
+        case 7: result = getManagers(data);
             break;
-        case 12: results = utilizedDeptBudget(data);
+        case 8: result = viewTeam(data);
+            break;
+        case 9: result = viewRoles(data);
+            break;
+        case 10: result = getDeptRoles(data);
+            break;
+        case 11: result = utilizedDeptBudget(data);
             break;
 
         //UPDATE
-        case 13: results = updateEmployee(data);
+        case 12: result = updateEmployee(data);
             break;
-        case 14: results = updateManager(data);
+        case 13: result = updateManager(data);
             break;
 
         // DELETE
-        case 15: results = deleteEmployee(data);
+        case 14: result = deleteEmployee(data);
             break;
-        case 16: results = deleteRole(data);
+        case 15: result = deleteRole(data);
             break;
-        case 17: results = deleteDept(data);
+        case 16: result = deleteDept(data);
             break;
     }
-    return results;
+    return result;
 }
 
-module.exports = { sendResults };
+module.exports = sendResults;
