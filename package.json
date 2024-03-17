@@ -1,11 +1,11 @@
 {
   "name": "employee-tracker",
   "version": "1.0.0",
-  "description": "A command-line application that manages a fictional company's employee database using Node.js, Inquirer and MySQL.",
-  "main": "server.js",
+  "description": "A command-line application that manages a fictional library employee database using Node.js, Inquirer and MySQL.",
+  "main": "index.js",
   "scripts": {
-    "start": "node ./assets/ui.js",
-    "watch": "nodemon server.js",
+    "start": "node index.js",
+    "watch": "nodemon index.js",
     "seed": "node ./db/seeds.sql"
   },
   "keywords": [],
