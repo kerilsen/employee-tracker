@@ -1,4 +1,6 @@
-const logo = `
+const welcome = () => {
+
+   const logo = `
  ______                 _                       
 |  ____|               | |                      
 | |__   _ __ ___  _ __ | | ___  _   _  ___  ___ 
@@ -12,4 +14,9 @@ const logo = `
    |_|_|  \\__,_|\\___|_|\\_\\___|_|                
 `;
 
-module.exports = { logo };
+   // Display logo
+   console.log(`\x1b[36m`, logo);
+   console.log(`Welcome to Central Public Library System`);
+}
+
+module.exports = { welcome };
