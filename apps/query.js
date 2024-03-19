@@ -10,7 +10,6 @@ const addEmployee = () => {
 
 // 2. Add a new role and salary
 const addRole = () => {
-    // Ask what department too
     return `INSERT INTO roles (title, salary) VALUES (?, ?);`;
 }
 
@@ -51,7 +50,7 @@ const getManagers = () => {
 // 8. View employees by manager
 const viewTeam = () => {
     // get list of managers to choose from then grab id
-    return `SELECT concat(first_name, ' ', last_name) AS Team_members FROM employees WHERE manager_id = ?;`
+    return `SELECT concat(first_name, ' ', last_name) AS Team_members FROM employees WHERE manager_id = ?`
 }
 
 // 9. View all roles
@@ -103,15 +102,12 @@ const utilizedDeptBudget = () => {
 // UPDATE
 // 13. Update employee record
 const updateEmployee = () => {
-    // get department/role id
     return `UPDATE employees SET deptrole_id = ? WHERE id = ?;`;
 }
 
-// Update employee managers
 // 14. Update employee's manager
 const updateManager = () => {
-    // get list of managers to choose from
-    return `UPDATE employees WHERE id = ? SET manager_id = ?;`
+    return `UPDATE employees SET manager_id = ? WHERE id = ? ;`
 }
 
 // DELETE
@@ -138,53 +134,53 @@ const quit = () => {
 }
 
 // Switch statement to choose from all queries - send parameters or just leave ?
-const grabQuery = (choice) => {
+const grabQuery = async (choice) => {
     let query;
     switch (choice) {
         // CREATE 
-        case 1: query = addEmployee();
+        case 1: query = await addEmployee();
             break;
-        case 2: query = addRole();
+        case 2: query = await addRole();
             break;
-        case 3: query = addDept();
+        case 3: query = await addDept();
             break;
-        case 4: query = addDeptRole();
+        case 4: query = await addDeptRole();
             break;
 
         // READ
-        case 5: query = viewEmployees();
+        case 5: query = await viewEmployees();
             break;
-        case 6: query = viewDeptEmployees();
+        case 6: query = await viewDeptEmployees();
             break;
-        case 7: query = getManagers();
+        case 7: query = await getManagers();
             break;
-        case 8: query = viewTeam();
+        case 8: query = await viewTeam();
             break;
-        case 9: query = viewRoles();
+        case 9: query = await viewRoles();
             break;
-        case 10: query = viewDepartments();
+        case 10: query = await viewDepartments();
             break;
-        case 11: query = getDeptRoles();
+        case 11: query = await getDeptRoles();
             break;
-        case 12: query = utilizedDeptBudget();
+        case 12: query = await utilizedDeptBudget();
             break;
 
         //UPDATE
-        case 13: query = updateEmployee();
+        case 13: query = await updateEmployee();
             break;
-        case 14: query = updateManager();
+        case 14: query = await updateManager();
             break;
 
         // DELETE
-        case 15: query = deleteEmployee();
+        case 15: query = await deleteEmployee();
             break;
-        case 16: query = deleteRole();
+        case 16: query = await deleteRole();
             break;
-        case 17: query = deleteDept();
+        case 17: query = await deleteDept();
             break;
 
         // QUIT
-        case 18: query = quit();
+        case 18: query = await quit();
             break;
     }
     return query;

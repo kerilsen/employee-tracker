@@ -1,9 +1,5 @@
 const db = require('../config/connection');
 
-const lastNames = () => {
-    return `SELECT id, last_name AS name FROM employees`;
-}
-
 const deptRoles = () => {
     return `SELECT dr.id AS id, concat(d.department_name, ' - ', r.title) AS name
     FROM departmentRoles dr
@@ -18,7 +14,11 @@ const managers = () => {
 }
 
 const departments = () => {
-    return `SELECT id AS ID, department_name AS name FROM departments;`
+    return `SELECT id, department_name AS name FROM departments;`
+}
+
+const employees = () => {
+    return `SELECT id, concat(first_name, ' ', last_name) AS name FROM employees;`
 }
 
 const grabData = async (value) => {
@@ -28,15 +28,14 @@ const grabData = async (value) => {
             break;
         case 'managers': choice = managers();
             break;
-        case 'lastNames': choice = lastNames();
-            break;
         case 'departments': choice = departments();
             break;
-
+        case 'employees': choice = employees();
+            break;
     }
     const [rows] = await db.query(choice);
     const choices = rows.map(row => ({ name: row.name, value: row.id }))
     return choices;
 }
 
-module.exports = { grabData };
+module.exports = grabData;

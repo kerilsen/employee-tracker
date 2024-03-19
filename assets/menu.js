@@ -6,7 +6,7 @@ const mainMenu = {
         { name: 'Add employee', value: 1 },
         { name: 'Add role', value: 2 },
         { name: 'Add department', value: 3 },
-        { name: 'Add department with role', value: 4 },
+        // { name: 'Add department with role', value: 4 },
         { name: 'View all employees', value: 5 },
         { name: 'View employees by department', value: 6 },
         { name: 'View all managers', value: 7 },
@@ -24,4 +24,4 @@ const mainMenu = {
     ],
 };
 
-module.exports = { mainMenu };
+module.exports = mainMenu;

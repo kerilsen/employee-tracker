@@ -8,4 +8,4 @@ const goodbye = () => {
       console.log('Goodbye!');
 };
 
-module.exports = { goodbye };
+module.exports = goodbye;
