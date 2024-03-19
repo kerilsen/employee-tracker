@@ -19,4 +19,4 @@ const welcome = () => {
    console.log(`Welcome to Central Public Library System`);
 }
 
-module.exports = { welcome };
+module.exports = welcome;

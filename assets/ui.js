@@ -1,17 +1,20 @@
+
 const inquirer = require('inquirer');
-const grabQuery = require('../utils/query');
 const db = require('../config/connection');
-const { grabPrompt } = require('../utils/prompts');
-const { mainMenu } = require('../assets/menu');
-const updateDB = require('../utils/updateDB');
+const grabQuery = require('../apps/query');
+const grabPrompt = require('../apps/prompts');
+const mainMenu = require('../assets/menu');
+const updateDB = require('../apps/updateDB');
+
+const goodbye = require('./goodbye');
 
 async function userInterface() {
     try {
+        // display main menu of options
         const getInput = await inquirer.prompt(mainMenu);
         // grab menu choice as a number
         const choice = await getInput.menu;
-        // These are the menu options that do not require any follow-up questions from the user
-        // Just need to grab the results and send back
+        // simple queries that do not require further prompts
         const simpleQuery = [5, 7, 9, 10, 11];
         try {
             if (simpleQuery.includes(choice)) {
@@ -19,20 +22,27 @@ async function userInterface() {
                 const [rows] = await db.query(query);
                 console.table(rows);
             } else {
-            // send for nested inquirer prompts
-            const answers = await grabPrompt(choice);
-            await updateDB(choice, answers);
+                // send for nested inquirer prompts
+                const input = await grabPrompt(choice);
+                // update or call on the database with user input
+                await updateDB(choice, input);
             }
-            // loop back with a recursive function(when the user presses a key?) - need to add an exit
-            // while db.connect is on? else goodbye()
-            userInterface();
-
+            // loop back with a recursive function
+            const next = await grabPrompt(19);
+            if (next) {
+                setTimeout(() => {
+                    userInterface();
+                }, 1000);
+            }
+            else {
+                goodbye();
+            }
         } catch (error) {
-            console.error(error);
+            console.error(`There was a problem processing your menu request: ${error}`);
         }
     } catch (error) {
-        console.error(error);
+        console.error(`Problem loading main menu: ${error}`);
     }
 };
 
-module.exports = { userInterface };
+module.exports = userInterface;
