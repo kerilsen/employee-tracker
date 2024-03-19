@@ -20,8 +20,7 @@ const addEmployee = async (data) => {
 const addRole = async (data) => {
     const role = {
         "title": data.title,
-        "salary": data.salary,
-        "dept_id": data.department
+        "salary": data.salary
     }
     const roleQuery =
     {
@@ -109,7 +108,7 @@ const deleteDept = async (data) => {
         const query = {
             text: grabQuery(17),
             values: [data.department],
-            message: `${data.department} has been deleted`
+            message: `${data.department.name} has been deleted`
         };
         await process(query);
         return;
@@ -124,51 +123,56 @@ const getLastID = async () => {
 }
 
 // Helper function to process MySQL parametized results
-const process = async (object) => {
-    // do I need different processes depending on operation?
+const process = async (choice, object) => {
+    const returnResults = [];
     try {
-        const [rows] = await db.query(object.text, object.values);
-        console.table(rows);
+        if (returnResults.includes(choice)) {
+            // do I need different processes depending on operation?
+            // yes - only need this for the 'view' functions
+            // is there a better way than having to pass 'choice' around so much
+            const [rows] = await db.query(object.text, object.values);
+            console.table(rows);
+        }
+        else {
+            console.info(object.message);
+        }
     } catch (error) {
         console.error('Error performing database operation: ', error);
     }
-    console.info(object.message);
-    return;
-};
 
-// Switch statement to choose from all MySQL operations
-const updateDB = async (choice, data) => {
-    switch (choice) {
-        // CREATE 
-        case 1: await addEmployee(data);
-            break;
-        case 2: await addRole(data);
-            await addDeptRole(data);
-            break;
-        case 3: await addDept(data);
-            break;
+    // Switch statement to choose from all MySQL operations
+    const updateDB = async (choice, data) => {
+        switch (choice) {
+            // CREATE 
+            case 1: await addEmployee(data);
+                break;
+            case 2: await addRole(data);
+                await addDeptRole(data);
+                break;
+            case 3: await addDept(data);
+                break;
 
-        // READ
-        case 6: await viewDeptEmployees(data);
-            break;
-        case 8: await viewTeam(data);
-            break;
+            // READ
+            case 6: await viewDeptEmployees(data);
+                break;
+            case 8: await viewTeam(data);
+                break;
 
-        //UPDATE
-        case 12: await updateEmployee(data);
-            break;
-        case 13: await updateManager(data);
-            break;
+            //UPDATE
+            case 12: await updateEmployee(data);
+                break;
+            case 13: await updateManager(data);
+                break;
 
-        // DELETE
-        case 14: await deleteEmployee(data);
-            break;
-        case 15: await deleteRole(data);
-            break;
-        case 16: await deleteDept(data);
-            break;
+            // DELETE
+            case 14: await deleteEmployee(data);
+                break;
+            case 15: await deleteRole(data);
+                break;
+            case 16: await deleteDept(data);
+                break;
+        }
+        return;
     }
-    return;
-}
 
-module.exports = updateDB;
+    module.exports = updateDB;

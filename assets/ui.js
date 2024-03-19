@@ -1,11 +1,9 @@
-
 const inquirer = require('inquirer');
 const db = require('../config/connection');
 const grabQuery = require('../apps/query');
 const grabPrompt = require('../apps/prompts');
 const mainMenu = require('../assets/menu');
 const updateDB = require('../apps/updateDB');
-
 const goodbye = require('./goodbye');
 
 async function userInterface() {

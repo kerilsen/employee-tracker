@@ -14,7 +14,7 @@ const welcome = () => {
    |_|_|  \\__,_|\\___|_|\\_\\___|_|                
 `;
 
-   // Display logo
+   // Display logo and welcome message
    console.log(`\x1b[36m`, logo);
    console.log(`Welcome to Central Public Library System`);
 }
