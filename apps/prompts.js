@@ -1,3 +1,5 @@
+// This is a library of inquirer prompts to get information from the user
+// There is a switch operator 'grabPrompt' that grabs them by number value
 const grabData = require('./data');
 const inquirer = require('inquirer');
 
@@ -124,7 +126,7 @@ const updateEmployee = async () => {
 
 // 14. Update manager of the employee
 const updateManager = async () => {
-    const value = await inquirer.prompt(
+    const value = await inquirer.prompt([
         {
             type: 'list',
             name: 'employee',
@@ -136,7 +138,8 @@ const updateManager = async () => {
             name: 'manager',
             message: 'Which manager does this employee now have?',
             choices: await grabData('managers')
-        });
+        }
+    ]);
     return value;
 }
 

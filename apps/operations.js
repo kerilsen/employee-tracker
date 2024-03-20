@@ -1,3 +1,6 @@
+// This is a library of MySQL operations that require input from the user
+// There is an updateDB switch operator that grabs them by number value
+
 const db = require('../config/connection');
 const grabQuery = require('./queries');
 
@@ -45,12 +48,12 @@ const addDept = async (data) => {
     await process(query);
 };
 
-// 4. Add a new department and role pairing
+// 4. Add a new department and role pairing when new role added
 const addDeptRole = async (data) => {
+    // Grab the last insert ID from addRole operation to get the new role_id
     const insert = await db.query(`SELECT LAST_INSERT_ID();`);
     const role_id = insert[0][0]['LAST_INSERT_ID()'];
     const dept_id = data.department;
-    console.log(dept_id, role_id);
     const query = {
         text: await grabQuery(4),
         values: [dept_id, role_id],
@@ -64,7 +67,7 @@ const viewDeptEmployees = async (data) => {
     const query = {
         text: await grabQuery(6),
         values: [data.department],
-        message: ''
+        message: ``
     };
     await format(query);
 };
@@ -104,7 +107,7 @@ const updateManager = async (data) => {
     const query = {
         text: await grabQuery(14),
         values: [data.manager, data.employee],
-        message: `${data.employee.name} now has a new manager (${data.manager.name})`
+        message: `This employee now has a new manager`
     };
     await process(query);
 }
