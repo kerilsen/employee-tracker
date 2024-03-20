@@ -1,4 +1,5 @@
-const db = require('../config/connection');
+// This is a library of template literals for the MySQL queries
+// There is a switch operator 'grabQuery' that grabs them by number value
 const { goodbye } = require('../assets/goodbye');
 
 // CREATE
@@ -65,12 +66,10 @@ const viewDepartments = () => {
 
 // 11. View all departments with roles
 const getDeptRoles = () => {
-    // send a list of department with roles to choose from
     return `SELECT dr.id AS JobID, d.department_name AS Department, r.title AS Role
     FROM departmentRoles dr
     LEFT JOIN roles r ON dr.role_id = r.id
     JOIN departments d ON dr.dept_id = d.id`;
-    // get the id from the selection to send to updateEmployees
 }
 
 // 12. View utilized department budget by department ID
@@ -81,23 +80,6 @@ const utilizedDeptBudget = () => {
     JOIN departments d ON d.id = dr.dept_id
     WHERE dr.dept_id = ?`
 }
-
-// UNUSED READ QUERIES
-// Find the manager(s) of a particular departmentRole
-// const findBoss = () => {
-//     return `SELECT DISTINCT e1.manager_id AS ManagerID, concat(e2.first_name, ' ', e2.last_name) AS Manager
-//     FROM employees e1
-//     JOIN employees e2 ON e1.manager_id = e2.id
-//     WHERE e1.deptrole_id = ?`;
-// }
-
-// Query that shows distinct JobID, Department Name, Role and Manager
-// SELECT DISTINCT dr.id AS JobID, d.department_name AS Department, r.title AS Role, e2.last_name AS Manager
-// FROM departmentRoles dr
-// LEFT JOIN roles r ON dr.role_id = r.id
-// JOIN departments d ON dr.dept_id = d.id
-// LEFT JOIN employees e1 ON e1.deptRole_id = dr.id
-// LEFT JOIN employees e2 ON e2.id = e1.manager_id;
 
 // UPDATE
 // 13. Update employee record
@@ -129,7 +111,6 @@ const deleteDept = () => {
 
 // 18. quit
 const quit = () => {
-    // not calling on the database here
     goodbye();
 }
 
@@ -138,49 +119,49 @@ const grabQuery = async (choice) => {
     let query;
     switch (choice) {
         // CREATE 
-        case 1: query = await addEmployee();
+        case 1: query = addEmployee();
             break;
-        case 2: query = await addRole();
+        case 2: query = addRole();
             break;
-        case 3: query = await addDept();
+        case 3: query = addDept();
             break;
-        case 4: query = await addDeptRole();
+        case 4: query = addDeptRole();
             break;
 
         // READ
-        case 5: query = await viewEmployees();
+        case 5: query = viewEmployees();
             break;
-        case 6: query = await viewDeptEmployees();
+        case 6: query = viewDeptEmployees();
             break;
-        case 7: query = await getManagers();
+        case 7: query = getManagers();
             break;
-        case 8: query = await viewTeam();
+        case 8: query = viewTeam();
             break;
-        case 9: query = await viewRoles();
+        case 9: query = viewRoles();
             break;
-        case 10: query = await viewDepartments();
+        case 10: query = viewDepartments();
             break;
-        case 11: query = await getDeptRoles();
+        case 11: query = getDeptRoles();
             break;
-        case 12: query = await utilizedDeptBudget();
+        case 12: query = utilizedDeptBudget();
             break;
 
         //UPDATE
-        case 13: query = await updateEmployee();
+        case 13: query = updateEmployee();
             break;
-        case 14: query = await updateManager();
+        case 14: query = updateManager();
             break;
 
         // DELETE
-        case 15: query = await deleteEmployee();
+        case 15: query = deleteEmployee();
             break;
-        case 16: query = await deleteRole();
+        case 16: query = deleteRole();
             break;
-        case 17: query = await deleteDept();
+        case 17: query = deleteDept();
             break;
 
         // QUIT
-        case 18: query = await quit();
+        case 18: query = quit();
             break;
     }
     return query;
