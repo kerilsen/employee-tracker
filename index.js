@@ -1,5 +1,5 @@
 const welcome = require('./assets/welcome');
-const userInterface = require('./assets/ui');
+const userInterface = require('./ui');
 
 welcome();
 userInterface();

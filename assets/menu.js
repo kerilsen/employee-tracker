@@ -15,7 +15,7 @@ const mainMenu = {
         { name: 'View all departments', value: 10 },
         { name: 'View departments with roles', value: 11 },
         { name: 'View utilized department budget', value: 12 },
-        { name: 'Update employee record', value: 13 },
+        { name: 'Update employee role', value: 13 },
         { name: 'Update employee manager', value: 14 },
         { name: 'Delete employee', value: 15 },
         { name: 'Delete role', value: 16 },

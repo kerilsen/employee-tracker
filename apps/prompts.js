@@ -1,6 +1,7 @@
 const grabData = require('./data');
 const inquirer = require('inquirer');
 
+// 1. Add an employee
 const addEmployee = async () => {
     const value = await inquirer.prompt([
         {
@@ -29,6 +30,7 @@ const addEmployee = async () => {
     return value;
 }
 
+// 2. Add a role
 const addRole = async () => {
     const value = await inquirer.prompt([
         {
@@ -51,6 +53,7 @@ const addRole = async () => {
     return value;
 }
 
+// 3. Add a department
 const addDept = async () => {
     const value = await inquirer.prompt([
         {
@@ -62,6 +65,7 @@ const addDept = async () => {
     return value;
 }
 
+// 6. View employees by department ID
 const viewDeptEmployees = async () => {
     const value = await inquirer.prompt(
         {
@@ -74,6 +78,7 @@ const viewDeptEmployees = async () => {
     return value;
 }
 
+// 8. View employees by manager ID
 const viewTeam = async () => {
     const value = await inquirer.prompt(
         {
@@ -86,8 +91,22 @@ const viewTeam = async () => {
     return value;
 }
 
+// 12. View utilized department budget by department ID
+const utilizedDeptBudget = async () => {
+    const value = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'department',
+            message: 'For which department would you like to see the utilized budget?',
+            choices: await grabData('departments')
+        }
+    ])
+    return value;
+}
+
+// 13. Update employee role
 const updateEmployee = async () => {
-    const value = await inquirer.prompt(
+    const value = await inquirer.prompt([
         {
             type: 'list',
             name: 'employee',
@@ -97,32 +116,67 @@ const updateEmployee = async () => {
         {
             type: 'list',
             name: 'role',
-            message: 'Which role does this employee now have?',
+            message: `What is the employee's new role?`,
             choices: await grabData('deptRoles')
+        }]);
+    return value;
+}
+
+// 14. Update manager of the employee
+const updateManager = async () => {
+    const value = await inquirer.prompt(
+        {
+            type: 'list',
+            name: 'employee',
+            message: 'Which employee would you like to update?',
+            choices: await grabData('employees')
+        },
+        {
+            type: 'list',
+            name: 'manager',
+            message: 'Which manager does this employee now have?',
+            choices: await grabData('managers')
         });
     return value;
 }
 
+// 15. Delete employee from the database
 const deleteEmployee = async () => {
-    const value = await inquirer.prompt({
-        type: 'list',
-        name: 'employee',
-        message: 'Which employee would you like to delete?',
-        choices: await grabData('employees')
-    });
+    const value = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'employee',
+            message: 'Which employee would you like to delete?',
+            choices: await grabData('employees')
+        },
+        {
+            type: 'confirm',
+            name: 'delete',
+            message: 'Are you sure you want to delete this employee?'
+        }
+    ]);
     return value;
 }
 
+// 16. Delete role
 const deleteRole = async () => {
-    const value = await inquirer.prompt({
-        type: 'list',
-        name: 'role',
-        message: 'Which role would you like to delete?',
-        choices: await grabData('deptRoles')
-    });
+    const value = await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'role',
+            message: 'Which role would you like to delete?',
+            choices: await grabData('roles')
+        },
+        {
+            type: 'confirm',
+            name: 'delete',
+            message: 'Are you sure you want to delete this role?'
+        }
+    ]);
     return value;
 }
 
+// 17. Delete department
 const deleteDept = async () => {
     const value = await inquirer.prompt([
         {
@@ -167,6 +221,8 @@ const grabPrompt = async (choice) => {
         case 6: prompt = await viewDeptEmployees();
             break;
         case 8: prompt = await viewTeam();
+            break;
+        case 12: prompt = await utilizedDeptBudget();
             break;
 
         //UPDATE
