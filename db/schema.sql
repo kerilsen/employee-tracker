@@ -18,8 +18,10 @@ CREATE TABLE departmentRoles (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     dept_id INT,
     role_id INT,
-    FOREIGN KEY (dept_id) REFERENCES departments(id),
+    FOREIGN KEY (dept_id) REFERENCES departments(id)
+    ON DELETE CASCADE,
     FOREIGN KEY (role_id) REFERENCES roles(id)
+    ON DELETE CASCADE
 );
 
 CREATE UNIQUE INDEX ix_uq ON departmentRoles (dept_id, role_id);

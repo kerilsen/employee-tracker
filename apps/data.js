@@ -21,6 +21,10 @@ const employees = () => {
     return `SELECT id, concat(first_name, ' ', last_name) AS name FROM employees;`
 }
 
+const roles = () => {
+    return `SELECT id, title AS name FROM roles;`
+}
+
 const grabData = async (value) => {
     let choice;
     switch (value) {
@@ -31,6 +35,8 @@ const grabData = async (value) => {
         case 'departments': choice = departments();
             break;
         case 'employees': choice = employees();
+            break;
+        case 'roles': choice = roles();
             break;
     }
     const [rows] = await db.query(choice);
